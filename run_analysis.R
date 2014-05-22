@@ -16,8 +16,9 @@ features<-read.table(paste0(getwd(),'/UCI HAR Dataset/features.txt'))[,2]
 
 ####Appropriately labels the data set with descriptive activity names.
 features<-make.names(features)
-colnames(data1)<-features 
-data2<-data1[grep("std|mean",features,value=TRUE)]
+features1<-sapply(features,function(x) gsub("\\.","",x))
+colnames(data1)<-features1 
+data2<-data1[grep("std|mean",features1,value=TRUE)]
 
 ####Uses descriptive activity names to name the activities in the data set
 
@@ -38,4 +39,4 @@ one_data_set<-cbind(data2,subjects1,activity2)
 avedata<-aggregate(one_data_set[,1:79], list(one_data_set$Subject,one_data_set$Activity), mean)
 colnames(avedata)[1]<-"Subject"
 colnames(avedata)[2]<-"Activity"
-write.txt(file="cleandata.txt",x=avedata)
+write.table(file="cleandata.txt",x=avedata)
